@@ -5,9 +5,11 @@ class MessageTile extends StatefulWidget {
   final String message;
   final String sender;
   final bool sentByMe;
+  final DateTime time;
 
   const MessageTile(
       {super.key,
+      required this.time,
       required this.message,
       required this.sender,
       required this.sentByMe});
@@ -19,6 +21,7 @@ class MessageTile extends StatefulWidget {
 class _MessageTileState extends State<MessageTile> {
   @override
   Widget build(BuildContext context) {
+    // print(widget.time);
     ScreenUtil.init(context);
     return Container(
       padding: EdgeInsets.only(
@@ -29,7 +32,7 @@ class _MessageTileState extends State<MessageTile> {
       alignment: widget.sentByMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
         padding:
-            EdgeInsets.only(top: 17.h, bottom: 17.h, left: 20.w, right: 20.w),
+            EdgeInsets.only(top: 10.h, bottom: 10.h, left: 20.w, right: 20.w),
         margin: widget.sentByMe
             ? EdgeInsets.only(left: 30.w)
             : EdgeInsets.only(right: 30.w),
@@ -43,17 +46,16 @@ class _MessageTileState extends State<MessageTile> {
                     topLeft: Radius.circular(20.r),
                     topRight: Radius.circular(20.r),
                     bottomRight: Radius.circular(20.r)),
-            color:
-                widget.sentByMe ? Theme.of(context).primaryColor : Colors.grey),
+            color: widget.sentByMe ? const Color(0xFFee7b64) : Colors.grey),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              widget.sender.toUpperCase(),
+              widget.sentByMe ? "You" : widget.sender,
               textAlign: TextAlign.center,
               style: TextStyle(
                   color: Colors.black,
-                  fontSize: 13.sp,
+                  fontSize: 16.sp,
                   fontWeight: FontWeight.bold),
             ),
             SizedBox(
@@ -64,6 +66,19 @@ class _MessageTileState extends State<MessageTile> {
               style: TextStyle(fontSize: 16.sp),
               textAlign: TextAlign.center,
             ),
+            SizedBox(
+              height: 8.h,
+            ),
+            SizedBox(
+              width: 100.w,
+              child: Text(
+                widget.time.hour.toString() +
+                    ":" +
+                    (widget.time.minute.toString()),
+                textAlign: TextAlign.right,
+                style: TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
+              ),
+            )
           ],
         ),
       ),

@@ -22,11 +22,6 @@ class _ProfilePageState extends State<ProfilePage> {
     ScreenUtil.init(context);
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(Icons.arrow_back)),
         centerTitle: true,
         backgroundColor: Theme.of(context).primaryColor,
         elevation: 0,
@@ -40,18 +35,15 @@ class _ProfilePageState extends State<ProfilePage> {
         child: ListView(
           padding: EdgeInsets.symmetric(vertical: 50.h),
           children: [
-            Icon(
-              Icons.account_circle,
-              size: 150.h,
-              color: Colors.grey,
-            ),
+            Icon(Icons.account_circle,
+                size: 150.h, color: Theme.of(context).primaryColor),
             SizedBox(
               height: 15.h,
             ),
             Text(
               widget.userName,
               textAlign: TextAlign.center,
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(fontWeight: FontWeight.w500,fontSize: 20.sp),
             ),
             SizedBox(
               height: 30.h,
@@ -134,13 +126,13 @@ class _ProfilePageState extends State<ProfilePage> {
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 40.w, vertical: 0.h),
         child: Column(
-          // crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
+          // crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Icon(
               Icons.account_circle,
               size: 200.r,
-              color: Colors.grey,
+              color:Theme.of(context).primaryColor
             ),
             SizedBox(height: 30.h),
             Row(

@@ -4,6 +4,7 @@ import 'package:chat_app/pages/home_page.dart';
 import 'package:chat_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../widgets/widgets.dart';
@@ -27,9 +28,6 @@ class _RegisterPageState extends State<RegisterPage> {
     ScreenUtil.init(context);
     return SafeArea(
       child: Scaffold(
-          // appBar: AppBar(
-          //   backgroundColor: Theme.of(context).primaryColor,
-          // ),
           body: _isLoading
               ? Center(
                   child: CircularProgressIndicator(
@@ -202,7 +200,7 @@ class _RegisterPageState extends State<RegisterPage> {
           await HelperFunction.saveUserLoggedInStatus(true);
           await HelperFunction.saveUserEmailSF(email);
           await HelperFunction.saveUserNameSF(fullName);
-          nextScreenReplace(context,HomePage());
+          nextScreenReplace(context, HomePage());
         } else {
           showSnackBar(context, Colors.red, value);
           setState(() {

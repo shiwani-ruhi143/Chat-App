@@ -9,13 +9,13 @@ class DatabaseService {
   final CollectionReference groupCollection =
       FirebaseFirestore.instance.collection("groups");
 
-  Future savingUserData(String fullName, String email) async {
+  Future savingUserData(String fullName, String email, ) async {
     return await userCollection.doc(uid).set({
       "fullName": fullName,
       "email": email,
       "groups": [],
       "profilePic": "",
-      "uid": this.uid,
+      "uid": uid,
     });
   }
 
@@ -45,12 +45,12 @@ class DatabaseService {
 
 //update members
     await groupDocumentReference
-      ..update({
+      .update({
         "members": FieldValue.arrayUnion(["${uid}_$userName"]),
         "groupId": groupDocumentReference.id
       });
 
-    DocumentReference userDocumentReference = await userCollection.doc(uid);
+    DocumentReference userDocumentReference =  userCollection.doc(uid);
     return await userDocumentReference.update({
       "groups":
           FieldValue.arrayUnion(["${groupDocumentReference.id}_$groupName"])
@@ -59,10 +59,10 @@ class DatabaseService {
 
   //getting chat
 
-  Future getChats(String groupId) async {
-    return await groupCollection
+  Stream<QuerySnapshot<Map<String,dynamic>>> getChats(String groupId)  {
+    return  groupCollection
         .doc(groupId)
-        .collection("message")
+        .collection("messages")
         .orderBy("time")
         .snapshots();
   }

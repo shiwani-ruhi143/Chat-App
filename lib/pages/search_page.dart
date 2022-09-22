@@ -171,11 +171,14 @@ class _SearchPageState extends State<SearchPage> {
     return ListTile(
       contentPadding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
       leading: CircleAvatar(
-        radius: 20.r,
+        radius: 30.r,
         backgroundColor: Theme.of(context).primaryColor,
         child: Text(
           groupName.substring(0, 1).toUpperCase(),
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(
+              color: Colors.white,
+              fontSize: 20.sp,
+              fontWeight: FontWeight.bold),
         ),
       ),
       title: Text(

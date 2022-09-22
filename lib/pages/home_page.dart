@@ -62,6 +62,7 @@ class _HomePageState extends State<HomePage> {
     ScreenUtil.init(context);
     return Scaffold(
       appBar: AppBar(
+        // toolbarHeight: 0,
         systemOverlayStyle:
             SystemUiOverlayStyle(statusBarColor: Colors.transparent),
         backgroundColor: Theme.of(context).primaryColor,
@@ -86,7 +87,7 @@ class _HomePageState extends State<HomePage> {
             Icon(
               Icons.account_circle,
               size: 150.h,
-              color: Colors.grey,
+              color: Theme.of(context).primaryColor,
             ),
             SizedBox(
               height: 15.h,
@@ -94,8 +95,9 @@ class _HomePageState extends State<HomePage> {
             Text(
               userName,
               textAlign: TextAlign.center,
-              style:
-                  TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+              style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 20.sp),
             ),
             SizedBox(
               height: 30.h,

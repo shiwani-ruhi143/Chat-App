@@ -29,148 +29,146 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context);
-    return Scaffold(
-        appBar: AppBar(
-           systemOverlayStyle:
-            SystemUiOverlayStyle(statusBarColor: Colors.transparent),
-        ),
-        body: _isLoading
-            ? Center(
-                child: CircularProgressIndicator(
-                  color: Theme.of(context).primaryColor,
-                ),
-              )
-            : SingleChildScrollView(
-                child: Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 20.h, vertical: 20.w),
-                  child: Form(
-                      key: formKey,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Groupie",
-                            style: TextStyle(
-                                fontSize: 40.sp, fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(
-                            height: 10.h,
-                          ),
-                          Text(
-                            "Login now to see what they are talking!",
-                            style: TextStyle(
-                                fontSize: 15.sp, fontWeight: FontWeight.w400),
-                          ),
-                          SizedBox(
-                            height: 40.h,
-                          ),
-                          Image.asset(
-                            'assets/images/welcome_screen.png',
-                          ),
-                          SizedBox(
-                            height: 30.h,
-                          ),
-                          TextFormField(
-                            decoration: textInputDecoration.copyWith(
-                                labelText: 'Email',
-                                prefixIcon: Icon(
-                                  Icons.email,
-                                  color: Theme.of(context).primaryColor,
-                                )),
-                            onChanged: ((value) {
-                              setState(() {
-                                email = value;
-                                // print(email);
-                              });
-                            }),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'This field is required';
-                              }
-
-                              // using regular expression
-                              if (!RegExp(
-                                      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                  .hasMatch(value)) {
-                                return "Please enter a valid email";
-                              }
-
-                              // the email is valid
-                              return null;
-                            },
-                          ),
-                          SizedBox(
-                            height: 10.h,
-                          ),
-                          TextFormField(
-                              obscureText: true,
+    return SafeArea(
+      child: Scaffold(
+          body: _isLoading
+              ? Center(
+                  child: CircularProgressIndicator(
+                    color: Theme.of(context).primaryColor,
+                  ),
+                )
+              : SingleChildScrollView(
+                  child: Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 20.h, vertical: 20.w),
+                    child: Form(
+                        key: formKey,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Groupie",
+                              style: TextStyle(
+                                  fontSize: 40.sp, fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                            Text(
+                              "Login now to see what they are talking!",
+                              style: TextStyle(
+                                  fontSize: 15.sp, fontWeight: FontWeight.w400),
+                            ),
+                            SizedBox(
+                              height: 40.h,
+                            ),
+                            Image.asset(
+                              'assets/images/welcome_screen.png',
+                            ),
+                            SizedBox(
+                              height: 30.h,
+                            ),
+                            TextFormField(
                               decoration: textInputDecoration.copyWith(
-                                  labelText: 'Password',
+                                  labelText: 'Email',
                                   prefixIcon: Icon(
-                                    Icons.lock,
+                                    Icons.email,
                                     color: Theme.of(context).primaryColor,
                                   )),
                               onChanged: ((value) {
                                 setState(() {
-                                  password = value;
+                                  email = value;
+                                  // print(email);
                                 });
                               }),
-                              validator: ((value) {
-                                if (value!.length < 6) {
-                                  return "Password must be at least 6 characters";
-                                } else {
-                                  return null;
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'This field is required';
                                 }
-                              })),
-                          SizedBox(
-                            height: 20.h,
-                          ),
-                          SizedBox(
-                            // height: 20.h,
-                            width: double.infinity,
-                            child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        Theme.of(context).primaryColor,
-                                    elevation: 0,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(30.r))),
-                                onPressed: login,
-                                child: Text(
-                                  "Sign in",
+
+                                // using regular expression
+                                if (!RegExp(
+                                        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                    .hasMatch(value)) {
+                                  return "Please enter a valid email";
+                                }
+
+                                // the email is valid
+                                return null;
+                              },
+                            ),
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                            TextFormField(
+                                obscureText: true,
+                                decoration: textInputDecoration.copyWith(
+                                    labelText: 'Password',
+                                    prefixIcon: Icon(
+                                      Icons.lock,
+                                      color: Theme.of(context).primaryColor,
+                                    )),
+                                onChanged: ((value) {
+                                  setState(() {
+                                    password = value;
+                                  });
+                                }),
+                                validator: ((value) {
+                                  if (value!.length < 6) {
+                                    return "Password must be at least 6 characters";
+                                  } else {
+                                    return null;
+                                  }
+                                })),
+                            SizedBox(
+                              height: 20.h,
+                            ),
+                            SizedBox(
+                              // height: 20.h,
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor:
+                                          Theme.of(context).primaryColor,
+                                      elevation: 0,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(30.r))),
+                                  onPressed: login,
+                                  child: Text(
+                                    "Sign in",
+                                    style: TextStyle(
+                                        fontSize: 16.sp, color: Colors.white),
+                                  )),
+                            ),
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                            Text.rich(
+                              TextSpan(
+                                  text: "Don't have an account?",
                                   style: TextStyle(
-                                      fontSize: 16.sp, color: Colors.white),
-                                )),
-                          ),
-                          SizedBox(
-                            height: 10.h,
-                          ),
-                          Text.rich(
-                            TextSpan(
-                                text: "Don't have an account?",
-                                style: TextStyle(
-                                    color: Colors.black, fontSize: 14.sp),
-                                children: <TextSpan>[
-                                  TextSpan(
-                                      text: "Register Here",
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          decoration:
-                                              TextDecoration.underline),
-                                      recognizer: TapGestureRecognizer()
-                                        ..onTap = () {
-                                          nextScreenReplace(
-                                              context, RegisterPage());
-                                        })
-                                ]),
-                          ),
-                        ],
-                      )),
-                ),
-              ));
+                                      color: Colors.black, fontSize: 14.sp),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                        text: "Register Here",
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            decoration:
+                                                TextDecoration.underline),
+                                        recognizer: TapGestureRecognizer()
+                                          ..onTap = () {
+                                            nextScreenReplace(
+                                                context, RegisterPage());
+                                          })
+                                  ]),
+                            ),
+                          ],
+                        )),
+                  ),
+                )),
+    );
   }
 
   login() async {

@@ -26,6 +26,7 @@ class _ChatPageState extends State<ChatPage> {
   String admin = "";
   Stream<QuerySnapshot>? chats;
   TextEditingController messageController = TextEditingController();
+  bool _isLoading = false;
   @override
   void initState() {
     // TODO: implement initState
@@ -34,13 +35,7 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   getChatandAdmin() {
-    DatabaseService().getChats(widget.groupId).then(
-      (value) {
-        setState(() {
-          chats = value;
-        });
-      },
-    );
+    chats = DatabaseService().getChats(widget.groupId);
     DatabaseService().getGroupAdmin(widget.groupId).then((value) {
       setState(() {
         admin = value;
@@ -57,7 +52,10 @@ class _ChatPageState extends State<ChatPage> {
             SystemUiOverlayStyle(statusBarColor: Colors.transparent),
         centerTitle: true,
         elevation: 0,
-        title: Text(widget.groupName),
+        title: Text(
+          widget.groupName,
+          style: TextStyle(fontSize: 27.sp, fontWeight: FontWeight.bold),
+        ),
         backgroundColor: Theme.of(context).primaryColor,
         actions: [
           IconButton(
@@ -77,7 +75,7 @@ class _ChatPageState extends State<ChatPage> {
             },
             icon: Icon(Icons.arrow_back_ios)),
       ),
-      body: Stack(
+      body: Column(
         children: <Widget>[
           chatMessages(),
           Container(
@@ -104,8 +102,10 @@ class _ChatPageState extends State<ChatPage> {
                     width: 12.w,
                   ),
                   GestureDetector(
-                    onTap: () {
-                      sendMessage();
+                    onTap: () async {
+                      _isLoading = true;
+                      setState(() {});
+                      await sendMessage();
                     },
                     child: Container(
                       height: 40.h,
@@ -113,10 +113,17 @@ class _ChatPageState extends State<ChatPage> {
                       decoration: BoxDecoration(
                           color: Theme.of(context).primaryColor,
                           borderRadius: BorderRadius.circular(20.r)),
-                      child: Icon(
-                        Icons.send,
-                        color: Colors.white,
-                      ),
+                      child: _isLoading
+                          ? Padding(
+                              padding: EdgeInsets.all(10.r),
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                              ),
+                            )
+                          : Icon(
+                              Icons.send,
+                              color: Colors.white,
+                            ),
                     ),
                   )
                 ],
@@ -133,22 +140,37 @@ class _ChatPageState extends State<ChatPage> {
       stream: chats,
       builder: (context, AsyncSnapshot snapshot) {
         return snapshot.hasData
-            ? ListView.builder(
-                itemCount: snapshot.data!.docs.length,
-                itemBuilder: ((context, index) {
-                  return MessageTile(
-                      message: snapshot.data!.docs[index]['message'],
-                      sender: snapshot.data!.docs[index]['sender'],
-                      sentByMe: widget.userName ==
-                          snapshot.data!.docs[index]['sender']);
-                }),
+            ? Expanded(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  reverse: true,
+                  itemCount: snapshot.data!.docs.length,
+                  itemBuilder: ((context, index) {
+                    return MessageTile(
+                        time: snapshot
+                            .data!
+                            .docs[snapshot.data!.docs.length - index - 1]
+                                ['time']
+                            .toDate(),
+                        message: snapshot.data!
+                                .docs[snapshot.data!.docs.length - index - 1]
+                            ['message'],
+                        sender: snapshot.data!
+                                .docs[snapshot.data!.docs.length - index - 1]
+                            ['sender'],
+                        sentByMe: widget.userName ==
+                            snapshot.data!.docs[snapshot.data!.docs.length -
+                                index -
+                                1]['sender']);
+                  }),
+                ),
               )
             : Container();
       },
     );
   }
 
-  sendMessage() async {
+  Future<void> sendMessage() async {
     if (messageController.text.isNotEmpty) {
       Map<String, dynamic> chatMessageMap = {
         'message': messageController.text,
@@ -158,6 +180,7 @@ class _ChatPageState extends State<ChatPage> {
       await DatabaseService().sendMessage(widget.groupId, chatMessageMap);
       setState(() {
         messageController.clear();
+        _isLoading = false;
       });
     }
   }

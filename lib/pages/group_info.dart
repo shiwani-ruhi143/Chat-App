@@ -62,7 +62,10 @@ class _GroupInfoState extends State<GroupInfo> {
             icon: Icon(Icons.arrow_back_ios)),
         centerTitle: true,
         elevation: 0,
-        title: Text("Group Info"),
+        title: Text(
+          "Group Info",
+          style: TextStyle(fontSize: 27.sp, fontWeight: FontWeight.bold),
+        ),
         backgroundColor: Theme.of(context).primaryColor,
         actions: [
           IconButton(
